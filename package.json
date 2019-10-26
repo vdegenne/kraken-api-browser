@@ -1,0 +1,30 @@
+{
+  "name": "kraken-api-browser",
+  "version": "1.0.0",
+  "description": "kraken-api port for modern browsers",
+  "scripts": {
+    "build": "browserify -p tinyify src/kraken-api-browser.js -o kraken-api-browser.js",
+    "demo": "http-server -c-1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vdegenne/kraken-api-browser.git"
+  },
+  "keywords": [
+    "kraken",
+    "cryptocurrencies",
+    "cryptocurrency",
+    "cryptoassets"
+  ],
+  "author": "Valentin Degenne <vdegenne@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vdegenne/kraken-api-browser/issues"
+  },
+  "homepage": "https://github.com/vdegenne/kraken-api-browser#readme",
+  "devDependencies": {
+    "crypto-browserify": "^3.12.0",
+    "qs": "^6.9.0",
+    "tinyify": "^2.5.1"
+  }
+}
