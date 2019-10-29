@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "kraken-api port for modern browsers",
   "scripts": {
-    "build": "browserify -p tinyify src/kraken-api-browser.js -o kraken-api-browser.js",
-    "demo": "http-server -c-1"
+    "build": "rollup -c",
+    "demo": "http-server -c-1 -S -C cert.pem -o"
   },
   "repository": {
     "type": "git",
@@ -23,8 +23,13 @@
   },
   "homepage": "https://github.com/vdegenne/kraken-api-browser#readme",
   "devDependencies": {
-    "crypto-browserify": "^3.12.0",
-    "qs": "^6.9.0",
-    "tinyify": "^2.5.1"
-  }
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-terser": "^5.1.2",
+    "rollup-plugin-typescript": "^1.0.1",
+    "tinyify": "^2.5.1",
+    "tslib": "^1.10.0",
+    "typescript": "^3.6.4"
+  },
+  "dependencies": {}
 }

@@ -1,6 +1,6 @@
 # kraken-api-browser
 
-`kraken-api-browser` is an es-module port for modern browsers inspired by the existing project [`kraken-api`](https://github.com/nothingisdead/npm-kraken-api) (server-side).
+`kraken-api-browser` is a browser port of the server-side kraken API [`kraken-api`](https://github.com/nothingisdead/npm-kraken-api).
 
 
 ## Installation
