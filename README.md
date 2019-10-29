@@ -9,8 +9,17 @@
 
 ## Usage
 
-In your html page :
-
 ```html
 <script href="/node_modules/kraken-api-browser/kraken-api-browser.js">
+<script>
+  window.onload = async () => {
+    const kraken = new KrakenClient('api key', 'private key') // replace with your keys
+
+    // example (request your bitcoin balance)
+    const response = await kraken.api('Balance')
+    console.log(response.result.XXBT)
+
+    // ...
+  }
+</script>
 ```
