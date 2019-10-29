@@ -10,7 +10,7 @@
 ## Usage
 
 ```html
-<script href="/node_modules/kraken-api-browser/kraken-api-browser.js">
+<script href="/node_modules/kraken-api-browser/kraken-api-browser.js"></script>
 <script>
   window.onload = async () => {
     const kraken = new KrakenClient('api key', 'private key') // replace with your keys
