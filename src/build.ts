@@ -6,31 +6,16 @@
 // import {Buffer} from 'buffer'
 // import createHmac from 'create-hmac'
 
+declare type PublicMethod = 'Time' | 'Assets' | 'AssetPairs' | 'Ticker' | 'Depth' | 'Trades' | 'Spread' | 'OHLC';
+declare type PrivateMethod = 'Balance' | 'TradeBalance' | 'OpenOrders' | 'ClosedOrders' | 'QueryOrders' | 'TradesHistory' | 'QueryTrades' | 'OpenPositions' | 'Ledgers' |
+  'QueryLedgers' | 'TradeVolume' | 'AddOrder' | 'CancelOrder' | 'DepositMethods' | 'DepositAddresses' | 'DepositStatus' | 'WithdrawInfo' | 'Withdraw' |
+  'WithdrawStatus' | 'WithdrawCancel';
+
 // Public/Private method names
 const methods = {
   public: ['Time', 'Assets', 'AssetPairs', 'Ticker', 'Depth', 'Trades', 'Spread', 'OHLC'],
-  private: [
-    'Balance',
-    'TradeBalance',
-    'OpenOrders',
-    'ClosedOrders',
-    'QueryOrders',
-    'TradesHistory',
-    'QueryTrades',
-    'OpenPositions',
-    'Ledgers',
-    'QueryLedgers',
-    'TradeVolume',
-    'AddOrder',
-    'CancelOrder',
-    'DepositMethods',
-    'DepositAddresses',
-    'DepositStatus',
-    'WithdrawInfo',
-    'Withdraw',
-    'WithdrawStatus',
-    'WithdrawCancel'
-  ]
+  private: ['Balance', 'TradeBalance', 'OpenOrders', 'ClosedOrders', 'QueryOrders', 'TradesHistory', 'QueryTrades', 'OpenPositions', 'Ledgers', 'QueryLedgers',
+    'TradeVolume', 'AddOrder', 'CancelOrder', 'DepositMethods', 'DepositAddresses', 'DepositStatus', 'WithdrawInfo', 'Withdraw', 'WithdrawStatus', 'WithdrawCancel']
 }
 
 // Default options
@@ -41,27 +26,27 @@ const defaults = {
 }
 
 
-const stringifyParams = (params:any) => Object.entries(params).map(p => p.join('=')).join('&')
+const stringifyParams = (params: any) => Object.entries(params).map(p => p.join('=')).join('&')
 
 
-const bufferToString = (buf:ArrayBuffer) => {
+const bufferToString = (buf: ArrayBuffer) => {
   // @ts-ignore
   return String.fromCharCode.apply(null, new Uint8Array(buf));
 }
-const stringToBuffer = (str:string) => {
+const stringToBuffer = (str: string) => {
   var bufView = new Uint8Array(str.length);
-  for (var i=0, strLen=str.length; i < strLen; i++) {
+  for (var i = 0, strLen = str.length; i < strLen; i++) {
     bufView[i] = str.charCodeAt(i);
   }
   return bufView;
 }
-const createSha256Hash = async (message:string) => {
+const createSha256Hash = async (message: string) => {
   const encoder = new TextEncoder()
   const data = encoder.encode(message)
   const hash = await crypto.subtle.digest('SHA-256', data)
   return new Uint8Array(hash)
 }
-const createSha512Hmac = async (privateKey: ArrayBuffer, message:string) => {
+const createSha512Hmac = async (privateKey: ArrayBuffer, message: string) => {
   const key = await crypto.subtle.importKey(
     'raw',
     privateKey,
@@ -75,14 +60,14 @@ const createSha512Hmac = async (privateKey: ArrayBuffer, message:string) => {
   return await crypto.subtle.sign('HMAC', key, stringToBuffer(message))
 }
 
-const changeStringEncoding = (text:string, encoding:string = 'utf8') => {
+const changeStringEncoding = (text: string, encoding: string = 'utf8') => {
   const decoder = new TextDecoder(encoding)
   return decoder.decode(stringToBuffer(text))
 }
 
 
 /* Create a signature for a request */
-const getMessageSignature = async (path:string, request:string, secret:string, nonce:number) => {
+const getMessageSignature = async (path: string, request: string, secret: string, nonce: number) => {
   // sha256
   const postData = stringifyParams(request)
   const sha256 = bufferToString(await createSha256Hash(nonce + postData))
@@ -96,7 +81,7 @@ const getMessageSignature = async (path:string, request:string, secret:string, n
 }
 
 // Send an API request
-const rawRequest = async (url:string, headers:any, data:any, timeout:number) => {
+const rawRequest = async (url: string, headers: any, data: any, timeout: number) => {
   // Set custom User-Agent string
   headers['User-Agent'] = 'Kraken Javascript API Client'
 
@@ -111,7 +96,7 @@ const rawRequest = async (url:string, headers:any, data:any, timeout:number) => 
   const body = await response.json()
 
   if (body.error && body.error.length) {
-    const error = body.error.filter((e:string) => e.startsWith('E')).map((e:string) => e.substr(1))
+    const error = body.error.filter((e: string) => e.startsWith('E')).map((e: string) => e.substr(1))
 
     if (!error.length) {
       throw new Error('Kraken API returned an unknown error')
@@ -124,12 +109,12 @@ const rawRequest = async (url:string, headers:any, data:any, timeout:number) => 
 }
 
 export declare type KrakenOptions = {
-  url?:string
-  version?:number
-  timeout?:number
-  otp?:string
-  key?:string
-  secret?:string
+  url?: string
+  version?: number
+  timeout?: number
+  otp?: string
+  key?: string
+  secret?: string
 }
 
 /**
@@ -144,7 +129,7 @@ class KrakenClient {
 
   protected config: KrakenOptions
 
-  constructor(key:string, secret:string, options?:KrakenOptions) {
+  constructor(key?: string, secret?: string, options?: KrakenOptions) {
     // Allow passing the OTP as the third argument for backwards compatibility
     if (typeof options === 'string') {
       options = { otp: options }
@@ -154,13 +139,13 @@ class KrakenClient {
   }
 
   /**
-	 * This method makes a public or private API request.
-	 * @param  {String}   method   The API method (public or private)
-	 * @param  {Object}   params   Arguments to pass to the api call
-	 * @param  {Function} callback A callback function to be executed when the request is complete
-	 * @return {Object}            The request object
-	 */
-  async api(method:string, params?:any, callback?:Function) {
+   * This method makes a public or private API request.
+   * @param  {String}   method   The API method (public or private)
+   * @param  {Object}   params   Arguments to pass to the api call
+   * @param  {Function} callback A callback function to be executed when the request is complete
+   * @return {Object}            The request object
+   */
+  async api(method: PublicMethod | PrivateMethod, params?: any, callback?: Function) {
     // Default params to empty object
     if (typeof params === 'function') {
       callback = params
@@ -168,22 +153,22 @@ class KrakenClient {
     }
 
     if (methods.public.includes(method)) {
-      return await this.publicMethod(method, params, callback)
+      return await this.publicMethod(<PublicMethod>method, params, callback)
     } else if (methods.private.includes(method)) {
-      return await this.privateMethod(method, params, callback)
+      return await this.privateMethod(<PrivateMethod>method, params, callback)
     } else {
       throw new Error(method + ' is not a valid API method.')
     }
   }
 
   /**
-	 * This method makes a public API request.
-	 * @param  {String}   method   The API method (public or private)
-	 * @param  {Object}   params   Arguments to pass to the api call
-	 * @param  {Function} callback A callback function to be executed when the request is complete
-	 * @return {Object}            The request object
-	 */
-  async publicMethod(method:string, params?:any, callback?:Function) {
+   * This method makes a public API request.
+   * @param  {String}   method   The API method (public or private)
+   * @param  {Object}   params   Arguments to pass to the api call
+   * @param  {Function} callback A callback function to be executed when the request is complete
+   * @return {Object}            The request object
+   */
+  async publicMethod(method: PublicMethod, params?: any, callback?: Function) {
     params = params || {}
 
     // Default params to empty object
@@ -206,13 +191,13 @@ class KrakenClient {
   }
 
   /**
-	 * This method makes a private API request.
-	 * @param  {String}   method   The API method (public or private)
-	 * @param  {Object}   params   Arguments to pass to the api call
-	 * @param  {Function} callback A callback function to be executed when the request is complete
-	 * @return {Object}            The request object
-	 */
-  async privateMethod(method:string, params?:any, callback?:Function) {
+   * This method makes a private API request.
+   * @param  {String}   method   The API method (public or private)
+   * @param  {Object}   params   Arguments to pass to the api call
+   * @param  {Function} callback A callback function to be executed when the request is complete
+   * @return {Object}            The request object
+   */
+  async privateMethod(method: PrivateMethod, params?: any, callback?: Function) {
     params = params || {}
 
     // Default params to empty object
@@ -234,7 +219,7 @@ class KrakenClient {
 
     const signature = await getMessageSignature(path, params, <string>this.config.secret, params.nonce)
     console.log(signature)
-    
+
     const headers = {
       'API-Key': this.config.key,
       'API-Sign': signature,

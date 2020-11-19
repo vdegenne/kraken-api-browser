@@ -1,10 +1,12 @@
 {
   "name": "kraken-api-browser",
-  "version": "1.0.0",
-  "description": "kraken-api port for modern browsers",
+  "version": "2.0.0",
+  "description": "kraken-api port for browsers",
+  "main": "build.js",
   "scripts": {
-    "build": "rollup -c",
-    "demo": "http-server -c-1 -S -C cert.pem -o"
+    "build": "yarn clean && tsc",
+    "test": "http-server -c-1 -S -C test/cert.pem -K test/key.pem --cors -o test/index.html",
+    "clean": "find . -name node_modules -prune -or \\( -name \"*.d.ts\" -or -name \"*.js\" \\) -print -exec rm '{}' \\+"
   },
   "repository": {
     "type": "git",
@@ -12,6 +14,8 @@
   },
   "keywords": [
     "kraken",
+    "crypto",
+    "cryptomoney",
     "cryptocurrencies",
     "cryptocurrency",
     "cryptoassets"
@@ -23,13 +27,14 @@
   },
   "homepage": "https://github.com/vdegenne/kraken-api-browser#readme",
   "devDependencies": {
+    "http-server": "^0.12.3",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-terser": "^5.1.2",
     "rollup-plugin-typescript": "^1.0.1",
     "tinyify": "^2.5.1",
     "tslib": "^1.10.0",
-    "typescript": "^3.6.4"
+    "typescript": "^4.0.5"
   },
   "dependencies": {}
 }
