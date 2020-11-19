@@ -9,9 +9,10 @@ It's a es6 module file, which means you can directly import it into your web pag
 ```html
 <script type="module" src="/node_modules/kraken-api-browser/build.js"></script>
 ```
-*(see Browser Usage for more details)*
+*(see Browser Usage for more details)*  
 
-You can also import in a es6 module project, even in a TypeScript project (typings included)
+
+You can also import it in a es6 module project, and in a TypeScript project (typings included)
 
 ```typescript
 import { KrakenClient } from 'kraken-api-browser';
@@ -20,7 +21,7 @@ import { KrakenClient } from 'kraken-api-browser';
 ## Usage
 
 ```javascript
-const krakenClient = new KrakenClient();
+const kraken = new KrakenClient();
 
 async function main () {
   const { result } = await kraken.api('Ticker', { pair: 'XBTEUR' });
