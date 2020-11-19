@@ -79,5 +79,5 @@ One way for Kraken to fix this issue would be to accept `OPTIONS` requests from 
 
 ## Support
 
-[Buy Me a Coffee](https://www.buymeacoffee.com/vdegenne)
+[Buy Me a Coffee](https://www.buymeacoffee.com/vdegenne)  
 bitcoin address: 3KfrLBhWgKxnNH9hoC8ipSPYi3LW3Qrj8i
