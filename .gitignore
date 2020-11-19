@@ -1,2 +1,3 @@
 node_modules
-/kraken-api-browser.js
+*.d.ts
+*.js
