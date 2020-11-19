@@ -23,7 +23,7 @@ import { KrakenClient } from 'kraken-api-browser';
 const krakenClient = new KrakenClient();
 
 async function main () {
-  const { result } = await kraken('Ticker', { pair: 'XBTEUR' });
+  const { result } = await kraken.api('Ticker', { pair: 'XBTEUR' });
 
   console.log(result);
 }

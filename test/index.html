@@ -3,12 +3,9 @@
   <body>
     <script type="module">
       import {KrakenClient} from '../build.js';
-      const kraken = new KrakenClient('xIQuzlimwwRn2El1MWIruXJhb46WbeArbNjJ0TBSoOszUf7eMc4y6t3G', 'nxQrOky9nTsntKLLzYg0WlPGCxXQxOJ1le8vC7JZCvhLN5h5bHz89l91KWLF7rkRMaEakiLsIQTk6WGY8qqAYA==');
+      const kraken = new KrakenClient('', '');
       async function main () {
-        let result;
-        result = (await kraken.api('Ticker', { pair: 'XBTEUR' })).result;
-        console.log(result);
-        result = await kraken.api('Balance');
+        const {result} = await kraken.api('Ticker', { pair: 'XBTEUR' });
         console.log(result);
       }
       main()

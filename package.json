@@ -28,12 +28,6 @@
   "homepage": "https://github.com/vdegenne/kraken-api-browser#readme",
   "devDependencies": {
     "http-server": "^0.12.3",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-terser": "^5.1.2",
-    "rollup-plugin-typescript": "^1.0.1",
-    "tinyify": "^2.5.1",
-    "tslib": "^1.10.0",
     "typescript": "^4.0.5"
   },
   "dependencies": {}
