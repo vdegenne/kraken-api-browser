@@ -85,23 +85,19 @@ const rawRequest = async (url: string, headers: any, data: any, timeout: number)
   // Set custom User-Agent string
   // headers['User-Agent'] = 'Kraken Javascript API Client'
 
-  const options = { headers, timeout }
+  const options: any = { headers, timeout }
 
-  let method = 'POST';
+  options.method = 'POST';
   if (url.indexOf('public') >= 0) {
     if (!Object.keys(data).length) {
-      method = 'GET';
+      options.method = 'GET';
     }
   }
 
-  if (method === 'POST') {
+  if (options.method === 'POST') {
     headers['Content-Type'] = 'application/x-www-form-urlencoded';
+    options.body = stringifyParams(data);
   }
-
-  Object.assign(options, {
-    method,
-    body: stringifyParams(data)
-  })
 
   const response = await fetch(url, options)
   const body = await response.json()
