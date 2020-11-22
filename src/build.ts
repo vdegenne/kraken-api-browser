@@ -83,12 +83,23 @@ const getMessageSignature = async (path: string, request: string, secret: string
 // Send an API request
 const rawRequest = async (url: string, headers: any, data: any, timeout: number) => {
   // Set custom User-Agent string
-  headers['User-Agent'] = 'Kraken Javascript API Client'
+  // headers['User-Agent'] = 'Kraken Javascript API Client'
 
   const options = { headers, timeout }
 
+  let method = 'POST';
+  if (url.indexOf('public') >= 0) {
+    if (!Object.keys(data).length) {
+      method = 'GET';
+    }
+  }
+
+  if (method === 'POST') {
+    headers['Content-Type'] = 'application/x-www-form-urlencoded';
+  }
+
   Object.assign(options, {
-    method: 'POST',
+    method,
     body: stringifyParams(data)
   })
 
@@ -179,9 +190,7 @@ class KrakenClient {
 
     const path = '/' + this.config.version + '/public/' + method
     const url = this.config.url + path
-    const response = rawRequest(url, {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }, params, <number>this.config.timeout)
+    const response = rawRequest(url, {}, params, <number>this.config.timeout)
 
     if (callback !== undefined && typeof callback === 'function') {
       response.then(result => (callback as Function)(null, result)).catch(error => (callback as Function)(error, null))
